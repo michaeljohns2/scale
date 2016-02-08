@@ -1,20 +1,24 @@
 ---
 # roles/common/tasks/main.yml
 - name: Disable firewall
+  tags: common
   service: name=firewalld state=stopped enabled=false
   become: true
 
 - name: Install python-pip
+  tags: common
   yum: name=python-pip
   become: true
 
 - name: Disable selinux
+  tags: common
   copy: src=config dest=/etc/selinux/config
   become: true
   notify:
     - set permissive mode
 
 - name: Install docker-py
+  tags: common
   pip: name=docker-py version=1.5.0
   become: true
 
@@ -24,13 +28,61 @@
   become: true
 
 - name: Install docker
+  tags: common
   yum: name=docker
   become: true
 
 - name: Setup docker
+  tags: common
   template: src=docker.j2 dest='/etc/sysconfig/docker'
   become: true
 
 - name: docker service
+  tags: common
   service: name=docker state=started enabled=true
+  become: true
+
+# build the docker NFS plugins
+- name: Install go
+  tags: common
+  yum: name=go
+  become: true
+
+- name: Install git
+  tags: common
+  yum: name=git
+  become: true
+
+- name: Create docker nfs plugin build directory
+  file: path=/tmp/docker-volume-netshare state=directory
+
+- name: Checkout docker nfs plugin
+  tags: common
+  command: go get -d github.com/gondor/docker-volume-netshare chdir=/tmp/docker-volume-netshare creates=./src/github.com/gondor/docker-volume-netshare
+  environment:
+    GOPATH: /tmp/docker-volume-netshare
+
+- name: Checkout correct docker helper library
+  tags: common
+  git: dest=/tmp/docker-volume-netshare/src/github.com/docker/go-plugins-helpers version=c673bfc017b81d1dd62b922fdc8672a42dd28226 repo=https://github.com/docker/go-plugins-helpers.git
+
+- name: Build docker nfs plugin
+  tags: common
+  command: go build chdir=/tmp/docker-volume-netshare github.com/gondor/docker-volume-netshare creates=/tmp/docker-volume-netshare/docker-volume-netshare
+  environment:
+    GOPATH: /tmp/docker-volume-netshare
+
+- name: Install docker nfs plugin
+  tags: common
+  command: install -m 755 /tmp/docker-volume-netshare/docker-volume-netshare /usr/sbin/ creates=/usr/sbin/docker-volume-netshare
+  become: true
+
+- name: Install docker nfs service definition
+  tags: common
+  copy: src=docker-volume-nfs.service dest=/usr/lib/systemd/system
+  become: true
+
+- name: Enable docker nfs plugin
+  tags: common
+  service: name=docker-volume-nfs state=started enabled=yes
   become: true
