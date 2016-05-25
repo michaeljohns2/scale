@@ -19,6 +19,8 @@ ALLOWED_HOSTS = [os.environ.get('SCALE_ALLOWED_HOSTS', '*')]
 STATIC_ROOT = os.environ.get('SCALE_STATIC_ROOT', 'static/')
 STATIC_URL = os.environ.get('SCALE_STATIC_URL', '/scale/static/')
 
+LOGGING_ADDRESS = os.environ.get('SCALE_LOGGING_ADDRESS', LOGGING_ADDRESS)
+
 DB_HOST = os.environ.get('SCALE_DB_HOST', '')
 if DB_HOST == '':
         DB_HOST = os.environ.get('DB_PORT_5432_TCP_ADDR', '')
@@ -55,3 +57,4 @@ SCHEDULER_ZK = os.environ.get('SCALE_ZK_URL', None)
 
 # The full name for the Scale Docker image (without version tag)
 SCALE_DOCKER_IMAGE = os.environ.get('SCALE_DOCKER_IMAGE', SCALE_DOCKER_IMAGE)
+

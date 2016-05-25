@@ -47,6 +47,9 @@ django_build_dir: "{{ scale_build_root }}/scale"
 # http://myhost/scale/ would requite this set to "/scale"
 scale_url_prefix: ""
 
+# Scale api url, make sure to unclude scale_url_prefix if necessary as this is used elsewhere
+scale_api_url: "{{ scale_url_prefix }}/api/v3"
+
 # Django allowed_hosts. We're isolating with docker in the default configuration so * should
 # be ok. If you will be exposing the API externally or want extra security, set this appropriately.
 allowed_hosts: '"*"'

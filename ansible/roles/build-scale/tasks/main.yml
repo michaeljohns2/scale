@@ -4,7 +4,7 @@
   tags: [ build-scale, build-scale-docker ]
   docker_image:
     path: "{{ scale_build_root }}"
-    name: "scale"
+    name: "geoint/scale"
     tag: "{{ scale_docker_version }}"
     state: build
   notify:
@@ -14,7 +14,7 @@
   tags: [ build-scale, build-scale-docker ]
   docker_image:
     path: "{{ scale_build_root }}/dockerfiles/framework/scale-web-static"
-    name: "scale-web-static"
+    name: "geoint/scale-web-static"
     tag: "{{ scale_docker_version }}"
     state: build
   notify:

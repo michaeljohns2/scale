@@ -12,7 +12,7 @@ Assuming you already checked out the source and have a functional install of gli
 
 Now you can run `goscale -h`
 
-If you have not chcekout out the source and would only like to build the cli:
+If you have not checked out the source and would only like to build the cli:
  1. mkdir scale-cli
  1. export GOPATH=$(pwd)/go-cli
  1. export PATH=$(GOPATH)/bin:$PATH

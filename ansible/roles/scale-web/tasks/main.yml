@@ -5,7 +5,7 @@
     name: scale-web-static
     docker_api_version: '{{ docker_api_version }}'
     image: '{{ docker_registry }}geoint/scale-web-static:{{ scale_docker_version }}'
-    state: killed
+    state: absent
   become: true
 
 - name: Start static scale web server
@@ -18,7 +18,6 @@
     pull: always
     restart_policy: always
     volumes_from: scale-scheduler
-    net: default
     links:
       - 'scale-scheduler:scale-web'
     ports:

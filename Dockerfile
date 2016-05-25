@@ -7,6 +7,7 @@ MAINTAINER Trevor R.H. Clarke <tclarke@ball.com>
 # ENABLE_GUNICORN to start the RESTful API server
 # SCALE_SECRET_KEY
 # SCALE_DEBUG
+# SCALE_URL_PREFIX
 # SCALE_API_URL
 # SCALE_ALLOWED_HOSTS
 # SCALE_STATIC_ROOT
@@ -19,6 +20,8 @@ MAINTAINER Trevor R.H. Clarke <tclarke@ball.com>
 # MESOS_MASTER_URL
 # SCALE_ZK_URL
 # SCALE_DOCKER_IMAGE
+
+ENV SCALE_API_URL "http://localhost/api/v3"
 
 # build arg to set the version qualifier. This should be blank for a
 # release build. Otherwise it is typically a build number or git hash.
@@ -53,8 +56,8 @@ RUN rpm -ivh /tmp/epel-release-7-5.noarch.rpm \
 
 # install the source code and config files
 COPY dockerfiles/framework/scale/entryPoint.sh /opt/scale/
-COPY scale/scale/local_settings_docker.py /opt/scale/scale/local_settings.py
 COPY scale /opt/scale
+COPY scale/scale/local_settings_docker.py /opt/scale/scale/local_settings.py
 
 # set the build number
 RUN bash -c 'if [[ ${BUILDNUM}x != x ]]; then sed "s/___BUILDNUM___/+${BUILDNUM}/" /opt/scale/scale/__init__.py.template > /opt/scale/scale/__init__.py; fi'

@@ -1,5 +1,17 @@
 #!/bin/sh
 
+# build scaleConfig.local.json
+
+cat > scaleConfig.local.json << EOF
+{
+    "scaleConfigLocal": {
+        "urls": {
+            "apiPrefix": "${SCALE_API_URL}"
+        }
+    }
+}
+EOF
+
 if [[ ${ENABLE_NFS}x != x ]]
 then
    sudo /usr/sbin/rpcbind
