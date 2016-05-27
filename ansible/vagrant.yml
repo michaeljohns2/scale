@@ -11,6 +11,12 @@
   roles:
     - dns-server
 
+- hosts: vagrant
+  tasks:
+    - name: Setup resolv.conf
+      lineinfile: dest=/etc/resolv.conf create=yes state=present insertafter="search.*" line="nameserver 10.4.4.10"
+      become: true
+
 # start and initialize the postgis server
 - hosts: db
   roles:
@@ -35,13 +41,18 @@
   roles:
     - docker-registry
 
+# start loggins
+- hosts: scale-scheduler
+  roles:
+    - logging
+
 # start mesos master and slaves
 - include: mesos.yml
 
 # build scale
-- hosts: build
-  roles:
-    - build-scale
+#- hosts: build
+#  roles:
+#    - build-scale
 
 # migrate database changes
 - hosts: build
@@ -53,10 +64,10 @@
   roles:
     - load-initial-data
 
+# start scale components
+- include: scale.yml
+
 # initialize example data
 - hosts: build
   roles:
     - init-examples
-
-# start scale components
-- include: scale.yml

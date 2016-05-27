@@ -18,66 +18,66 @@
   command: sh -c "echo \"execfile('/tmp/example_data.py')\" | docker run --rm -i -v /tmp:/tmp:ro -e SCALE_DB_USER={{ db_username }} -e SCALE_DB_PASS={{ db_password }} -e SCALE_DB_HOST={{ db_host }} {{ docker_registry }}geoint/scale:{{ scale_docker_version }} shell"
   become: true
 
-- name: Build landsat-base docker image
-  tags: init-examples
-  docker_image:
-    path: "{{ scale_build_root }}/dockerfiles/examples/landsat-base"
-    name: "geoint/landsat-base"
-    state: build
-  become: true
-
-- name: Build landsat-parse docker image
-  tags: init-examples
-  docker_image:
-    path: "{{ scale_build_root }}/dockerfiles/examples/landsat-parse"
-    name: "geoint/landsat-parse"
-    tag: "{{ example_image_tag }}"
-    state: build
-  become: true
-  notify:
-    - push landsat-parse
-
-- name: Build landsat-ndwi docker image
-  tags: init-examples
-  docker_image:
-    path: "{{ scale_build_root }}/dockerfiles/examples/landsat-ndwi"
-    name: "geoint/landsat-ndwi"
-    tag: "{{ example_image_tag }}"
-    state: build
-  become: true
-  notify:
-    - push landsat-ndwi
-
-- name: Build landsat-tiles docker image
-  tags: init-examples
-  docker_image:
-    path: "{{ scale_build_root }}/dockerfiles/examples/landsat-tiles"
-    name: "geoint/landsat-tiles"
-    tag: "{{ example_image_tag }}"
-    state: build
-  become: true
-  notify:
-    - push landsat-tiles
-
-- name: Build pca docker image
-  tags: init-examples
-  docker_image:
-    path: "{{ scale_build_root }}/dockerfiles/examples/pca"
-    name: "geoint/pca"
-    tag: "{{ example_image_tag }}"
-    state: build
-  become: true
-  notify:
-    - push pca
-
-- name: Build ace docker image
-  tags: init-examples
-  command: /scale/bin/goscale jobs commit -p chdir="{{ scale_build_root }}/dockerfiles/examples/ace"
-  become: true
-  environment:
-    DOCKER_REGISTRY: "{{ example_docker_registry | replace('/', '') }}"
-    SCALE_URL: 'http://{{ mesos_master_ip }}/api/v3'
-
+#- name: Build landsat-base docker image
+#  tags: init-examples
+#  docker_image:
+#    path: "{{ scale_build_root }}/dockerfiles/examples/landsat-base"
+#    name: "geoint/landsat-base"
+#    state: build
+#  become: true
+#
+#- name: Build landsat-parse docker image
+#  tags: init-examples
+#  docker_image:
+#    path: "{{ scale_build_root }}/dockerfiles/examples/landsat-parse"
+#    name: "geoint/landsat-parse"
+#    tag: "{{ example_image_tag }}"
+#    state: build
+#  become: true
+#  notify:
+#    - push landsat-parse
+#
+#- name: Build landsat-ndwi docker image
+#  tags: init-examples
+#  docker_image:
+#    path: "{{ scale_build_root }}/dockerfiles/examples/landsat-ndwi"
+#    name: "geoint/landsat-ndwi"
+#    tag: "{{ example_image_tag }}"
+#    state: build
+#  become: true
+#  notify:
+#    - push landsat-ndwi
+#
+#- name: Build landsat-tiles docker image
+#  tags: init-examples
+#  docker_image:
+#    path: "{{ scale_build_root }}/dockerfiles/examples/landsat-tiles"
+#    name: "geoint/landsat-tiles"
+#    tag: "{{ example_image_tag }}"
+#    state: build
+#  become: true
+#  notify:
+#    - push landsat-tiles
+#
+#- name: Build pca docker image
+#  tags: init-examples
+#  docker_image:
+#    path: "{{ scale_build_root }}/dockerfiles/examples/pca"
+#    name: "geoint/pca"
+#    tag: "{{ example_image_tag }}"
+#    state: build
+#  become: true
+#  notify:
+#    - push pca
+#
+#- name: Build ace docker image
+#  tags: init-examples
+#  command: /scale/bin/goscale jobs commit -p chdir="{{ scale_build_root }}/dockerfiles/examples/ace"
+#  become: true
+#  environment:
+#    DOCKER_REGISTRY: "{{ example_docker_registry | replace('/', '') }}"
+#    SCALE_URL: 'http://{{ mesos_master_ip }}/api/v3'
+#
 - name: Deploy the ace job
   tags: [ init-examples, example-database ]
   command: /scale/bin/goscale jobs deploy chdir="{{ scale_build_root }}/dockerfiles/examples/ace"
@@ -86,14 +86,14 @@
     DOCKER_REGISTRY: "{{ example_docker_registry | replace('/', '') }}"
     SCALE_URL: 'http://{{ mesos_master_ip }}/api/v3'
 
-- name: Build tad docker image
-  tags: init-examples
-  command: /scale/bin/goscale jobs commit -p chdir="{{ scale_build_root }}/dockerfiles/examples/tad"
-  become: true
-  environment:
-    DOCKER_REGISTRY: "{{ example_docker_registry | replace('/', '') }}"
-    SCALE_URL: 'http://{{ mesos_master_ip }}/api/v3'
-
+#- name: Build tad docker image
+#  tags: init-examples
+#  command: /scale/bin/goscale jobs commit -p chdir="{{ scale_build_root }}/dockerfiles/examples/tad"
+#  become: true
+#  environment:
+#    DOCKER_REGISTRY: "{{ example_docker_registry | replace('/', '') }}"
+#    SCALE_URL: 'http://{{ mesos_master_ip }}/api/v3'
+#
 - name: Deploy the tad job
   tags: [ init-examples, example-database ]
   command: /scale/bin/goscale jobs deploy chdir="{{ scale_build_root }}/dockerfiles/examples/tad"
@@ -102,14 +102,14 @@
     DOCKER_REGISTRY: "{{ example_docker_registry | replace('/', '') }}"
     SCALE_URL: 'http://{{ mesos_master_ip }}/api/v3'
 
-- name: Build jpl-signatures docker image
-  tags: init-examples
-  command: /scale/bin/goscale jobs commit -p chdir="{{ scale_build_root }}/dockerfiles/examples/jpl-signatures"
-  become: true
-  environment:
-    DOCKER_REGISTRY: "{{ example_docker_registry | replace('/', '') }}"
-    SCALE_URL: 'http://{{ mesos_master_ip }}/api/v3'
-
+#- name: Build jpl-signatures docker image
+#  tags: init-examples
+#  command: /scale/bin/goscale jobs commit -p chdir="{{ scale_build_root }}/dockerfiles/examples/jpl-signatures"
+#  become: true
+#  environment:
+#    DOCKER_REGISTRY: "{{ example_docker_registry | replace('/', '') }}"
+#    SCALE_URL: 'http://{{ mesos_master_ip }}/api/v3'
+#
 - name: Deploy the jpl-signatures job
   tags: [ init-examples, example-database ]
   command: /scale/bin/goscale jobs deploy chdir="{{ scale_build_root }}/dockerfiles/examples/jpl-signatures"
@@ -118,14 +118,14 @@
     DOCKER_REGISTRY: "{{ example_docker_registry | replace('/', '') }}"
     SCALE_URL: 'http://{{ mesos_master_ip }}/api/v3'
 
-- name: Build parse-binary docker image
-  tags: init-examples
-  command: /scale/bin/goscale jobs commit -p chdir="{{ scale_build_root }}/dockerfiles/examples/binary-parse"
-  become: true
-  environment:
-    DOCKER_REGISTRY: "{{ example_docker_registry | replace('/', '') }}"
-    SCALE_URL: 'http://{{ mesos_master_ip }}/api/v3'
-
+#- name: Build parse-binary docker image
+#  tags: init-examples
+#  command: /scale/bin/goscale jobs commit -p chdir="{{ scale_build_root }}/dockerfiles/examples/binary-parse"
+#  become: true
+#  environment:
+#    DOCKER_REGISTRY: "{{ example_docker_registry | replace('/', '') }}"
+#    SCALE_URL: 'http://{{ mesos_master_ip }}/api/v3'
+#
 - name: Deploy the parse-binary job
   tags: [ init-examples, example-database ]
   command: /scale/bin/goscale jobs deploy chdir="{{ scale_build_root }}/dockerfiles/examples/binary-parse"
@@ -149,14 +149,14 @@
     DOCKER_REGISTRY: "{{ example_docker_registry | replace('/', '') }}"
     SCALE_URL: 'http://{{ mesos_master_ip }}/api/v3'
 
-- name: Build vash docker image
-  tags: init-examples
-  command: /scale/bin/goscale jobs commit -p chdir="{{ scale_build_root }}/dockerfiles/examples/vash"
-  become: true
-  environment:
-    DOCKER_REGISTRY: "{{ example_docker_registry | replace('/', '') }}"
-    SCALE_URL: 'http://{{ mesos_master_ip }}/api/v3'
-
+#- name: Build vash docker image
+#  tags: init-examples
+#  command: /scale/bin/goscale jobs commit -p chdir="{{ scale_build_root }}/dockerfiles/examples/vash"
+#  become: true
+#  environment:
+#    DOCKER_REGISTRY: "{{ example_docker_registry | replace('/', '') }}"
+#    SCALE_URL: 'http://{{ mesos_master_ip }}/api/v3'
+#
 - name: Deploy the vash job
   tags: [ init-examples, example-database ]
   command: /scale/bin/goscale jobs deploy chdir="{{ scale_build_root }}/dockerfiles/examples/vash"

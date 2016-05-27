@@ -1,0 +1,29 @@
+---
+# logging/tasks/main.yml
+- name: Start elasticsearch
+  tags: logging
+  docker:
+    name: elasticsearch
+    docker_api_version: '{{ docker_api_version }}'
+    image: '{{ external_docker_registry }}elasticsearch'
+    state: started
+    restart_policy: always
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+
+- name: Start logstash
+  tags: logging
+  docker:
+    name: logstash
+    docker_api_version: '{{ docker_api_version }}'
+    image: '{{ external_docker_registry }}logstash'
+    command: "logstash -e 'input { gelf { type => docker; port => 12201 }} output { elasticsearch { hosts => ['elasticsearch:9200'] }}'"
+    state: started
+    restart_policy: always
+    links:
+      - "elasticsearch:elasticsearch"
+    ports:
+      - "12201:12201"
+      - "12201:12201/udp"
+  become: true
